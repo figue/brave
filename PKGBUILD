@@ -28,7 +28,7 @@ fi
 
 pkgname=brave
 _reponame=${pkgname}-browser
-pkgver=1.16.68
+pkgver=1.16.69
 pkgrel=1
 pkgdesc='A web browser that stops ads and trackers by default'
 arch=('x86_64')
@@ -123,7 +123,8 @@ prepare() {
 
     msg2 "Prepare the environment..."
     npm install
-    npm run init || (npm run update_patches && npm run init)
+    #npm run init || (npm run update_patches && npm run init)
+    npm run init
 
     msg2 "Apply Chromium patches..."
     cd src/
