@@ -101,11 +101,10 @@ _unwanted_bundled_libs=(
   $(printf "%s\n" ${!_system_libs[@]} | sed 's/^libjpeg$/&_turbo/')
 )
 
-depends+=(${_system_libs[@]})
-
 # Add depends if user wants a release with custom cflags and system libs
 if [ "$COMPONENT" = "4" ]; then
   depends+=('libpulse' 'pciutils')
+  depends+=(${_system_libs[@]})
   makedepends+=('lld' 'libva' 'libpipewire02' 'python2-xcb-proto' 'python2-setuptools')
 else
   makedepends+=('ncurses5-compat-libs')
