@@ -147,9 +147,6 @@ prepare() {
     sed -i 's/OFFICIAL_BUILD/GOOGLE_CHROME_BUILD/' \
         tools/generate_shim_headers/generate_shim_headers.py
 
-    sed -i $'s/\r$//' \
-        brave/vendor/bat-native-ads/src/bat/ads/internal/filters/ads_history_conversion_filter.cc
-
     msg2 "Add patches for custom build"
     patch -Np1 -i "$srcdir/brave-custom-build.patch"
 
