@@ -118,28 +118,6 @@ diff -ru a/brave/vendor/bat-native-usermodel/src/transformation.cc b/brave/vendo
  #include <codecvt>
  #include <math.h>
  namespace usermodel {
---- a/brave/vendor/bat-native-ads/src/bat/ads/internal/classification/classification_util.cc	2020-10-01 16:12:59.776666163 +0200
-+++ b/brave/vendor/bat-native-ads/src/bat/ads/internal/classification/classification_util.cc	2020-10-01 17:26:05.076665847 +0200
-@@ -5,6 +5,7 @@
- 
- #include "bat/ads/internal/classification/classification_util.h"
- 
-+#include <algorithm>
- #include "base/strings/string_split.h"
- 
- namespace ads {
-diff --git a/brave/vendor/bat-native-ads/src/bat/ads/internal/filters/ads_history_conversion_filter.cc b/brave/vendor/bat-native-ads/src/bat/ads/internal/filters/ads_history_conversion_filter.cc
-index 67bd13c94d..5e8e8736f5 100644
---- a/brave/vendor/bat-native-ads/src/bat/ads/internal/filters/ads_history_conversion_filter.cc
-+++ b/brave/vendor/bat-native-ads/src/bat/ads/internal/filters/ads_history_conversion_filter.cc
-@@ -4,6 +4,7 @@
-  * You can obtain one at http://mozilla.org/MPL/2.0/. */
- 
- #include "bat/ads/internal/filters/ads_history_conversion_filter.h"
-+#include <algorithm>
- 
- namespace ads {
- 
 diff --git a/brave/components/ipfs/ipfs_utils.cc b/brave/components/ipfs/ipfs_utils.cc
 index de984233dc..9414da92a3 100644
 --- a/brave/components/ipfs/ipfs_utils.cc
