@@ -50,6 +50,7 @@ source=("https://github.com/brave/brave-browser/archive/v${pkgver}.tar.gz"
         'brave-browser.desktop'
         "chromium-launcher-$_launcher_ver.tar.gz::https://github.com/foutrelis/chromium-launcher/archive/v$_launcher_ver.tar.gz"
         "https://github.com/stha09/chromium-patches/releases/download/${patchset_name}/${patchset_name}.tar.xz"
+        'brave-disable-stats-updater-url-check.patch'
         'brave-custom-build.patch')
 arch_revision=63e8313d989fbb6f05b8886cefff67a643d3d888
 for Patches in \
@@ -66,7 +67,8 @@ sha256sums=('699b75c6fa915f7e9f6ce9a6e5237456c82821f3fc726760a1e5ae3027a4f5f6'
             'fa6ed4341e5fc092703535b8becaa3743cb33c72f683ef450edd3ef66f70d42d'
             '04917e3cd4307d8e31bfb0027a5dce6d086edb10ff8a716024fbb8bb0c7dccf1'
             'c99934bcd2f3ae8ea9620f5f59a94338b2cf739647f04c28c8a551d9083fa7e9'
-            '8d1123e583e33ef8e91ddda0b62f7b8d51b9d6b61c73e74a90f40ef5f379573b'
+            '6032d713c629229d8a6a35aab7b046f9556430299b8fd711c4b51592c6cd7497'
+            'd492ca5946e8faba67be4893e89677c7053bdecafe06eed1df652bd37a948286'
             '771292942c0901092a402cc60ee883877a99fb804cb54d568c8c6c94565a48e1')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
@@ -141,6 +143,9 @@ prepare() {
 
   # Hacky patching
   sed -e 's/enable_distro_version_check = true/enable_distro_version_check = false/g' -i chrome/installer/linux/BUILD.gn
+
+  # Fix segfault inmediately in execution
+  patch -Np1 -i "$srcdir/brave-disable-stats-updater-url-check.patch"
 
   # Allow building against system libraries in official builds
   if [ "$COMPONENT" = "4" ]; then
