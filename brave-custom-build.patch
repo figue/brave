@@ -142,3 +142,15 @@ index d3bf012a5f..794ba63eb7 100644
  
  #include "base/logging.h"
  #include "brave/components/ipfs/common/ipfs_constants.h"
+diff --git a/brave/vendor/bat-native-ads/src/bat/ads/internal/ad_targeting/ad_targeting_util.cc b/brave/vendor/bat-native-ads/src/bat/ads/internal/ad_targeting/ad_targeting_util.cc
+index 977dd27c48..2e2e38da4a 100644
+--- a/brave/vendor/bat-native-ads/src/bat/ads/internal/ad_targeting/ad_targeting_util.cc
++++ b/brave/vendor/bat-native-ads/src/bat/ads/internal/ad_targeting/ad_targeting_util.cc
+@@ -5,6 +5,7 @@
+ 
+ #include "bat/ads/internal/ad_targeting/ad_targeting_util.h"
+ 
++#include <algorithm>
+ #include "base/strings/string_split.h"
+ 
+ namespace ads {
