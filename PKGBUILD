@@ -52,9 +52,9 @@ source=("https://github.com/brave/brave-browser/archive/v${pkgver}.tar.gz"
         "https://github.com/stha09/chromium-patches/releases/download/${patchset_name}/${patchset_name}.tar.xz"
         'brave-disable-stats-updater-url-check.patch'
         'brave-custom-build.patch')
-arch_revision=63e8313d989fbb6f05b8886cefff67a643d3d888
+arch_revision=1e8f3fe75e060ea70553b32926185bec84561e32
 for Patches in \
-        chromium-skia-harmony.patch
+	subpixel-anti-aliasing-in-FreeType-2.8.1.patch
 do
   source+=("${Patches}::https://git.archlinux.org/svntogit/packages.git/plain/trunk/${Patches}?h=packages/chromium&id=${arch_revision}")
 done
@@ -68,8 +68,8 @@ sha256sums=('699b75c6fa915f7e9f6ce9a6e5237456c82821f3fc726760a1e5ae3027a4f5f6'
             '04917e3cd4307d8e31bfb0027a5dce6d086edb10ff8a716024fbb8bb0c7dccf1'
             'c99934bcd2f3ae8ea9620f5f59a94338b2cf739647f04c28c8a551d9083fa7e9'
             '6032d713c629229d8a6a35aab7b046f9556430299b8fd711c4b51592c6cd7497'
-            'd492ca5946e8faba67be4893e89677c7053bdecafe06eed1df652bd37a948286'
-            '771292942c0901092a402cc60ee883877a99fb804cb54d568c8c6c94565a48e1')
+            'a3dd2b72727f7c1d21fa21ca5136d214c48ebc40a2e0d1d721ab60a7dab42574'
+            '1e2913e21c491d546e05f9b4edf5a6c7a22d89ed0b36ef692ca6272bcd5faec6')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -116,9 +116,11 @@ prepare() {
 
   msg2 "Prepare the environment..."
   npm install
-  #npm run init || (npm run update_patches && npm run init)
-  npm run init
-  npm run sync -- --force
+  if [ -d src/out/Release ]; then
+    npm run sync -- --force
+  else
+    npm run init
+  fi
 
   msg2 "Apply Chromium patches..."
   cd src/
@@ -130,13 +132,11 @@ prepare() {
     third_party/libxml/chromium/*.cc
 
   # Upstream fixes
+  patch -Np1 -d third_party/skia <../../subpixel-anti-aliasing-in-FreeType-2.8.1.patch
 
   # Fixes for building with libstdc++ instead of libc++
   patch -Np1 -i ../../patches/chromium-87-ServiceWorkerContainerHost-crash.patch
   patch -Np1 -i ../../patches/chromium-87-openscreen-include.patch
-
-  # https://crbug.com/skia/6663#c10
-  patch -Np0 -i "${srcdir}"/chromium-skia-harmony.patch
 
   # Force script incompatible with Python 3 to use /usr/bin/python2
   sed -i '1s|python$|&2|' third_party/dom_distiller_js/protoc_plugins/*.py
@@ -168,13 +168,18 @@ prepare() {
       -delete
     done
 
-    python build/linux/unbundle/replace_gn_files.py \
+    python2 build/linux/unbundle/replace_gn_files.py \
       --system-libraries "${!_system_libs[@]}"
   fi
 }
 
 build() {
   cd "brave-browser-${pkgver}"
+
+  if check_buildoption ccache y; then
+    # Avoid falling back to preprocessor mode when sources contain time macros
+    export CCACHE_SLOPPINESS=time_macros
+  fi
 
   export CC=clang
   export CXX=clang++
@@ -256,13 +261,14 @@ build() {
 }
 
 package() {
-  install -d -m0755 "${pkgdir}/usr/lib/${pkgname}/"{,swiftshader}
+  install -d -m0755 "${pkgdir}/usr/lib/${pkgname}/"{,swiftshader,locales,resources}
 
   # Copy necessary release files
   cd "brave-browser-${pkgver}/src/out/Release"
   cp -a --reflink=auto \
-    locales \
-    resources \
+    resources.pak \
+    WidevineCdm \
+    MEIPreload \
     brave \
     brave_*.pak \
     chrome_*.pak \
@@ -275,6 +281,13 @@ package() {
     swiftshader/libGLESv2.so \
     swiftshader/libEGL.so \
     "${pkgdir}/usr/lib/brave/swiftshader/"
+  cp -a --reflink=auto \
+    locales/*.pak \
+    "${pkgdir}/usr/lib/brave/locales/"
+  cp -a --reflink=auto \
+    resources/brave_extension \
+    resources/brave_rewards \
+    "${pkgdir}/usr/lib/brave/resources/"
 
   if [ "$COMPONENT" != "4" ] || [[ -z ${_system_libs[icu]+set} ]]; then
     cp -a --reflink=auto \
