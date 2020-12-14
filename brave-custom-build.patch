@@ -154,3 +154,15 @@ index 977dd27c48..2e2e38da4a 100644
  #include "base/strings/string_split.h"
  
  namespace ads {
+diff --git a/brave/vendor/bat-native-ads/src/bat/ads/internal/p2a/p2a_util.cc b/brave/vendor/bat-native-ads/src/bat/ads/internal/p2a/p2a_util.cc
+index 801ada1adf..3041a6954f 100644
+--- a/brave/vendor/bat-native-ads/src/bat/ads/internal/p2a/p2a_util.cc
++++ b/brave/vendor/bat-native-ads/src/bat/ads/internal/p2a/p2a_util.cc
+@@ -5,6 +5,7 @@
+ 
+ #include "bat/ads/internal/p2a/p2a_util.h"
+ 
++#include <algorithm>
+ #include "bat/ads/internal/ad_targeting/ad_targeting_util.h"
+ 
+ namespace ads {
