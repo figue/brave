@@ -166,3 +166,16 @@ index 801ada1adf..3041a6954f 100644
  #include "bat/ads/internal/ad_targeting/ad_targeting_util.h"
  
  namespace ads {
+diff --git a/brave/vendor/bat-native-ads/src/bat/ads/internal/ads_history/filters/ads_history_date_range_filter.cc b/brave/vendor/bat-native-ads/src/bat/ads/internal/ads_history/filters/ads_history_date_range_filter.cc
+index f9c29eca59..2669a9a0b1 100644
+--- a/brave/vendor/bat-native-ads/src/bat/ads/internal/ads_history/filters/ads_history_date_range_filter.cc
++++ b/brave/vendor/bat-native-ads/src/bat/ads/internal/ads_history/filters/ads_history_date_range_filter.cc
+@@ -5,6 +5,8 @@
+ 
+ #include "bat/ads/internal/ads_history/filters/ads_history_date_range_filter.h"
+ 
++#include <algorithm>
++
+ namespace ads {
+ 
+ AdsHistoryDateRangeFilter::AdsHistoryDateRangeFilter() = default;
