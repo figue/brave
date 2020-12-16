@@ -52,9 +52,11 @@ source=("https://github.com/brave/brave-browser/archive/v${pkgver}.tar.gz"
         "https://github.com/stha09/chromium-patches/releases/download/${patchset_name}/${patchset_name}.tar.xz"
         'brave-disable-stats-updater-url-check.patch'
         'brave-custom-build.patch')
-arch_revision=1e8f3fe75e060ea70553b32926185bec84561e32
+arch_revision=4332a9b5a5f7e1d5ec8e95ee51581c3e55450f41
 for Patches in \
-	subpixel-anti-aliasing-in-FreeType-2.8.1.patch
+	subpixel-anti-aliasing-in-FreeType-2.8.1.patch \
+    icu68.patch \
+    v8-icu68.patch
 do
   source+=("${Patches}::https://git.archlinux.org/svntogit/packages.git/plain/trunk/${Patches}?h=packages/chromium&id=${arch_revision}")
 done
@@ -69,7 +71,9 @@ sha256sums=('580ffbd59a02640f007677899e8f77ee8dccde151a11c947697c64d4eefc62f7'
             'c99934bcd2f3ae8ea9620f5f59a94338b2cf739647f04c28c8a551d9083fa7e9'
             '6032d713c629229d8a6a35aab7b046f9556430299b8fd711c4b51592c6cd7497'
             'd888be0e297bb768ba0bac99616c1180377b7030ac1b8fcb4436a39aca7c7acf'
-            '1e2913e21c491d546e05f9b4edf5a6c7a22d89ed0b36ef692ca6272bcd5faec6')
+            '1e2913e21c491d546e05f9b4edf5a6c7a22d89ed0b36ef692ca6272bcd5faec6'
+            '38fb5218331d6e03915490dab64f7b8bf26833a581d1aaa02090437c67e9439c'
+            '6e919c9712d8fe6c2918778df1f8c2ee0675a87a48be5d2aaa54e320703ced4b')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -132,6 +136,8 @@ prepare() {
     third_party/libxml/chromium/*.cc
 
   # Upstream fixes
+  patch -Np1 -i ../../icu68.patch
+  patch -Np1 -d v8 <../../v8-icu68.patch
   patch -Np1 -d third_party/skia <../../subpixel-anti-aliasing-in-FreeType-2.8.1.patch
 
   # Fixes for building with libstdc++ instead of libc++

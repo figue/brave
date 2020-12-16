@@ -55,7 +55,9 @@ pkgbase = brave
 	source = https://github.com/stha09/chromium-patches/releases/download/chromium-87-patchset-9/chromium-87-patchset-9.tar.xz
 	source = brave-disable-stats-updater-url-check.patch
 	source = brave-custom-build.patch
-	source = subpixel-anti-aliasing-in-FreeType-2.8.1.patch::https://git.archlinux.org/svntogit/packages.git/plain/trunk/subpixel-anti-aliasing-in-FreeType-2.8.1.patch?h=packages/chromium&id=1e8f3fe75e060ea70553b32926185bec84561e32
+	source = subpixel-anti-aliasing-in-FreeType-2.8.1.patch::https://git.archlinux.org/svntogit/packages.git/plain/trunk/subpixel-anti-aliasing-in-FreeType-2.8.1.patch?h=packages/chromium&id=4332a9b5a5f7e1d5ec8e95ee51581c3e55450f41
+	source = icu68.patch::https://git.archlinux.org/svntogit/packages.git/plain/trunk/icu68.patch?h=packages/chromium&id=4332a9b5a5f7e1d5ec8e95ee51581c3e55450f41
+	source = v8-icu68.patch::https://git.archlinux.org/svntogit/packages.git/plain/trunk/v8-icu68.patch?h=packages/chromium&id=4332a9b5a5f7e1d5ec8e95ee51581c3e55450f41
 	sha256sums = 580ffbd59a02640f007677899e8f77ee8dccde151a11c947697c64d4eefc62f7
 	sha256sums = 725e2d0c32da4b3de2c27a02abaf2f5acca7a25dcea563ae458c537ac4ffc4d5
 	sha256sums = fa6ed4341e5fc092703535b8becaa3743cb33c72f683ef450edd3ef66f70d42d
@@ -64,6 +66,8 @@ pkgbase = brave
 	sha256sums = 6032d713c629229d8a6a35aab7b046f9556430299b8fd711c4b51592c6cd7497
 	sha256sums = d888be0e297bb768ba0bac99616c1180377b7030ac1b8fcb4436a39aca7c7acf
 	sha256sums = 1e2913e21c491d546e05f9b4edf5a6c7a22d89ed0b36ef692ca6272bcd5faec6
+	sha256sums = 38fb5218331d6e03915490dab64f7b8bf26833a581d1aaa02090437c67e9439c
+	sha256sums = 6e919c9712d8fe6c2918778df1f8c2ee0675a87a48be5d2aaa54e320703ced4b
 
 pkgname = brave
 
