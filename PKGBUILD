@@ -50,7 +50,6 @@ source=("https://github.com/brave/brave-browser/archive/v${pkgver}.tar.gz"
         'brave-browser.desktop'
         "chromium-launcher-$_launcher_ver.tar.gz::https://github.com/foutrelis/chromium-launcher/archive/v$_launcher_ver.tar.gz"
         "https://github.com/stha09/chromium-patches/releases/download/${patchset_name}/${patchset_name}.tar.xz"
-        'brave-disable-stats-updater-url-check.patch'
         'brave-custom-build.patch')
 arch_revision=4332a9b5a5f7e1d5ec8e95ee51581c3e55450f41
 for Patches in \
@@ -69,7 +68,6 @@ sha256sums=('71e20bd2231598332937c54e0807dfba79e2c68ac54f25a1caa714ffea04107f'
             'fa6ed4341e5fc092703535b8becaa3743cb33c72f683ef450edd3ef66f70d42d'
             '04917e3cd4307d8e31bfb0027a5dce6d086edb10ff8a716024fbb8bb0c7dccf1'
             'c99934bcd2f3ae8ea9620f5f59a94338b2cf739647f04c28c8a551d9083fa7e9'
-            '6032d713c629229d8a6a35aab7b046f9556430299b8fd711c4b51592c6cd7497'
             'd888be0e297bb768ba0bac99616c1180377b7030ac1b8fcb4436a39aca7c7acf'
             '1e2913e21c491d546e05f9b4edf5a6c7a22d89ed0b36ef692ca6272bcd5faec6'
             '38fb5218331d6e03915490dab64f7b8bf26833a581d1aaa02090437c67e9439c'
@@ -150,9 +148,6 @@ prepare() {
   # Hacky patching
   sed -e 's/enable_distro_version_check = true/enable_distro_version_check = false/g' -i chrome/installer/linux/BUILD.gn
 
-  # Fix segfault inmediately in execution
-  patch -Np1 -i "$srcdir/brave-disable-stats-updater-url-check.patch"
-
   # Allow building against system libraries in official builds
   if [ "$COMPONENT" = "4" ]; then
     sed -i 's/OFFICIAL_BUILD/GOOGLE_CHROME_BUILD/' \
@@ -201,6 +196,11 @@ build() {
   if [ "$USE_SCCACHE" -eq "1" ]; then
     echo "sccache = /usr/bin/sccache" >> .npmrc
   fi
+
+  echo 'brave_variations_server_url = https://variations.brave.com/seed' >> .npmrc
+  echo 'brave_stats_updater_url = https://laptop-updates.brave.com' >> .npmrc
+  echo 'brave_stats_api_key = fe033168-0ff8-4af6-9a7f-95e2cbfc' >> .npmrc
+  echo 'brave_sync_endpoint = https://sync-v2.brave.com/v2' >> .npmrc
 
   npm_args=()
   if [ "$COMPONENT" = "4" ]; then
@@ -272,7 +272,6 @@ package() {
   # Copy necessary release files
   cd "brave-browser-${pkgver}/src/out/Release"
   cp -a --reflink=auto \
-    resources.pak \
     WidevineCdm \
     MEIPreload \
     brave \
