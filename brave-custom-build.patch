@@ -166,7 +166,7 @@ index 0621414234..ffd7685f5d 100644
      if (!is_mac) {
        sources += [
          "$root_out_dir/$brave_exe",
-@@ -315,10 +321,13 @@ if (!is_android && !is_ios) {
+@@ -315,9 +321,12 @@ if (!is_android && !is_ios) {
          "$root_out_dir/brave_resources.pak",
          "$root_out_dir/chrome_100_percent.pak",
          "$root_out_dir/chrome_200_percent.pak",
