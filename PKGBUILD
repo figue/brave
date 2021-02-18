@@ -154,7 +154,7 @@ prepare() {
         tools/generate_shim_headers/generate_shim_headers.py
 
     msg2 "Add patches for custom build"
-    for _patch in "$srcdir/$brave_patchset_name"/*.patch; do
+    for _patch in "$srcdir/brave-patches-$brave_patchset_name"/*.patch; do
         patch -Np1 -i "$_patch"
     done
 
