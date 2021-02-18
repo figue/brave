@@ -33,7 +33,6 @@ pkgbase = brave
 	source = brave-browser.desktop
 	source = chromium-launcher-6.tar.gz::https://github.com/foutrelis/chromium-launcher/archive/v6.tar.gz
 	source = https://github.com/stha09/chromium-patches/releases/download/chromium-88-patchset-3/chromium-88-patchset-3.tar.xz
-	source = brave-custom-build.patch
 	source = subpixel-anti-aliasing-in-FreeType-2.8.1.patch::https://git.archlinux.org/svntogit/packages.git/plain/trunk/subpixel-anti-aliasing-in-FreeType-2.8.1.patch?h=packages/chromium&id=4332a9b5a5f7e1d5ec8e95ee51581c3e55450f41
 	sha256sums = e7623d84f0bf1f4a17bd54d2cba609b64e7fb40915b6fd5abf6483cc7ecedab2
 	sha256sums = 725e2d0c32da4b3de2c27a02abaf2f5acca7a25dcea563ae458c537ac4ffc4d5
