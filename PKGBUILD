@@ -96,8 +96,8 @@ if [ "$COMPONENT" = "4" ]; then
   #echo "Build with system libs is disabled for now" && exit 1
   brave_base_ver="$(echo $pkgver | cut -d . -f 1-2)"
   brave_patchset="1"
-  brave_patchset_name="brave-${brave_base_ver}-patchset-${brave_patchset}"
-  source+=("https://gitlab.com/hadogenes/brave-patches/-/archive/${brave_patchset_name}/${brave_patchset_name}.zip")
+  brave_patchset_name="brave-${brave_base_ver}-patches-${brave_patchset}"
+  source+=("https://gitlab.com/hadogenes/brave-patches/-/archive/${brave_patchset_name}/brave-patches-${brave_patchset_name}.zip")
   sha256sums+=("bd111797dc8a769a546612ab37c81983c4c4f8c04f83e707af7676e8fded45ff")
 
   depends+=('libpulse' 'pciutils')
