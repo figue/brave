@@ -115,7 +115,7 @@ if [ "$COMPONENT" = "4" ]; then
 
   depends+=('libpulse' 'pciutils')
   depends+=(${_system_libs[@]})
-  makedepends+=('lld' 'libva' 'libpipewire02' 'python2-xcb-proto')
+  makedepends+=('lld' 'libva' 'pipewire' 'python2-xcb-proto')
 else
   makedepends+=('ncurses5-compat-libs')
 fi
