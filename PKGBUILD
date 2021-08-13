@@ -27,14 +27,14 @@ fi
 ##
 
 pkgname=brave
-pkgver=1.27.108
+pkgver=1.28.105
 pkgrel=1
 pkgdesc='A web browser that stops ads and trackers by default'
 arch=('x86_64')
 url='https://www.brave.com/download'
 license=('custom')
 depends=('gtk3' 'nss' 'alsa-lib' 'libxss' 'ttf-font' 'libva' 'json-glib')
-makedepends=('git' 'npm' 'python' 'python2' 'icu' 'glibc' 'gperf' 'java-runtime-headless' 'clang' 'pipewire')
+makedepends=('git' 'npm' 'python' 'python2' 'python-protobuf' 'icu' 'glibc' 'gperf' 'java-runtime-headless' 'clang' 'pipewire')
 optdepends=('pipewire: WebRTC desktop sharing under Wayland'
             'kdialog: support for native dialogs in Plasma'
             'org.freedesktop.secrets: password storage backend on GNOME / Xfce'
@@ -43,7 +43,7 @@ optdepends=('pipewire: WebRTC desktop sharing under Wayland'
 chromium_base_ver="92"
 patchset="7"
 patchset_name="chromium-${chromium_base_ver}-patchset-${patchset}"
-_launcher_ver=7
+_launcher_ver=8
 source=("brave-browser::git+https://github.com/brave/brave-browser.git#tag=v${pkgver}"
         "chromium::git+https://github.com/chromium/chromium.git"
         "git+https://chromium.googlesource.com/chromium/tools/depot_tools.git"
@@ -54,12 +54,12 @@ source=("brave-browser::git+https://github.com/brave/brave-browser.git#tag=v${pk
         "chromium-launcher-$_launcher_ver.tar.gz::https://github.com/foutrelis/chromium-launcher/archive/v$_launcher_ver.tar.gz"
         "https://github.com/stha09/chromium-patches/releases/download/${patchset_name}/${patchset_name}.tar.xz"
         "chromium-no-history.patch")
-arch_revision=a9139b232f517a0e3f90542650c7dd5ba0201e68
+arch_revision=4b878998bab64f599eb2dd14e27e7fe42f69a1f2
 Patches="extend-enable-accelerated-video-decode-flag.patch
          linux-sandbox-syscall-broker-use-struct-kernel_stat.patch
          linux-sandbox-fix-fstatat-crash.patch
-         make-GetUsableSize-handle-nullptr-gracefully.patch
          sql-make-VirtualCursor-standard-layout-type.patch
+         chromium-freetype-2.11.patch
          "
 for arch_patch in $Patches
 do
@@ -73,14 +73,14 @@ sha256sums=('SKIP'
             'SKIP'
             'e4478c79e2eed500777117bb1d48f4be1866908dcda8d75003a5d055618dfdca'
             'fa6ed4341e5fc092703535b8becaa3743cb33c72f683ef450edd3ef66f70d42d'
-            '86859c11cfc8ba106a3826479c0bc759324a62150b271dd35d1a0f96e890f52f'
+            '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             '53a2cbb1b58d652d5424ff9040b6a51b9dc6348ce3edc68344cd0d25f1f4beb2'
             'ea3446500d22904493f41be69e54557e984a809213df56f3cdf63178d2afb49e'
             '66db9132d6f5e06aa26e5de0924f814224a76a9bdf4b61afce161fb1d7643b22'
             '268e18ad56e5970157b51ec9fc8eb58ba93e313ea1e49c842a1ed0820d9c1fa3'
             '253348550d54b8ae317fd250f772f506d2bae49fb5dc75fe15d872ea3d0e04a5'
-            '4489e5e7854a7dcd9464133eb4664250ce7149ac1714a0bf10ca0d82d8806568'
-            'dd317f85e5abfdcfc89c6f23f4c8edbcdebdd5e083dcec770e5da49ee647d150')
+            'dd317f85e5abfdcfc89c6f23f4c8edbcdebdd5e083dcec770e5da49ee647d150'
+            '7ef689cd6b2f85f2b76b2a10ecede003cfa0c2da15acc998ecbc445f2c95ced6')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -124,7 +124,7 @@ else
 fi
 
 prepare() {
-  cd "brave-browser"
+  cd brave-browser
 
   # Hack to prioritize python2 in PATH
   mkdir -p "${srcdir}/bin"
@@ -168,12 +168,15 @@ prepare() {
   patch -Np1 -i ../../linux-sandbox-syscall-broker-use-struct-kernel_stat.patch
   patch -Np1 -i ../../linux-sandbox-fix-fstatat-crash.patch
   patch -Np1 -i ../../make-GetUsableSize-handle-nullptr-gracefully.patch
-
   # https://chromium-review.googlesource.com/c/chromium/src/+/2862724
   patch -Np1 -i ../../sql-make-VirtualCursor-standard-layout-type.patch
 
+  # Fix build with FreeType 2.11 (patch from Gentoo)
+  patch -Np1 -i ../../chromium-freetype-2.11.patch
+
   # Fixes for building with libstdc++ instead of libc++
   patch -Np1 -i ../../patches/chromium-90-ruy-include.patch
+
 
   # Hacky patching
   sed -e 's/enable_distro_version_check = true/enable_distro_version_check = false/g' -i chrome/installer/linux/BUILD.gn
@@ -316,6 +319,7 @@ package() {
     v8_context_snapshot.bin \
     libGLESv2.so \
     libEGL.so \
+    crashpad_handler \
     "${pkgdir}/usr/lib/${pkgname}/"
   cp -a --reflink=auto \
     swiftshader/libGLESv2.so \
