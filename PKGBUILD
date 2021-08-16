@@ -34,7 +34,7 @@ arch=('x86_64')
 url='https://www.brave.com/download'
 license=('custom')
 depends=('gtk3' 'nss' 'alsa-lib' 'libxss' 'ttf-font' 'libva' 'json-glib')
-makedepends=('git' 'npm' 'python' 'python2' 'python-protobuf' 'icu' 'glibc' 'gperf' 'java-runtime-headless' 'clang' 'pipewire')
+makedepends=('git' 'npm' 'python' 'python2' 'python-protobuf' 'icu' 'glibc' 'gperf' 'java-runtime-headless' 'clang' 'llvm' 'pipewire')
 optdepends=('pipewire: WebRTC desktop sharing under Wayland'
             'kdialog: support for native dialogs in Plasma'
             'org.freedesktop.secrets: password storage backend on GNOME / Xfce'
