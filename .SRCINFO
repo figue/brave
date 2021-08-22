@@ -15,7 +15,6 @@ pkgbase = brave
 	makedepends = gperf
 	makedepends = java-runtime-headless
 	makedepends = clang
-
 	makedepends = pipewire
 	makedepends = ncurses5-compat-libs
 	depends = gtk3
@@ -25,7 +24,6 @@ pkgbase = brave
 	depends = ttf-font
 	depends = libva
 	depends = json-glib
-
 	optdepends = pipewire: WebRTC desktop sharing under Wayland
 	optdepends = kdialog: support for native dialogs in Plasma
 	optdepends = org.freedesktop.secrets: password storage backend on GNOME / Xfce

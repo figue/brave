@@ -167,7 +167,7 @@ prepare() {
   patch -Np1 -i ../../extend-enable-accelerated-video-decode-flag.patch
   patch -Np1 -i ../../linux-sandbox-syscall-broker-use-struct-kernel_stat.patch
   patch -Np1 -i ../../linux-sandbox-fix-fstatat-crash.patch
-  patch -Np1 -i ../../make-GetUsableSize-handle-nullptr-gracefully.patch
+
   # https://chromium-review.googlesource.com/c/chromium/src/+/2862724
   patch -Np1 -i ../../sql-make-VirtualCursor-standard-layout-type.patch
 
@@ -176,7 +176,6 @@ prepare() {
 
   # Fixes for building with libstdc++ instead of libc++
   patch -Np1 -i ../../patches/chromium-90-ruy-include.patch
-
 
   # Hacky patching
   sed -e 's/enable_distro_version_check = true/enable_distro_version_check = false/g' -i chrome/installer/linux/BUILD.gn
